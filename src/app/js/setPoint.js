@@ -1,7 +1,9 @@
-import _setView from "./setView.js";
+
 import {
     data
 } from "../data.js";
+import _setView from "./setView.js";
+import _setObstacle from "./setObstacle.js";
 
 export default (() => {
     data.point = {
@@ -41,8 +43,9 @@ export default (() => {
             e.currentTarget.style.background = `${entries[n][1]}`;
             e.currentTarget.setAttribute('empty', false);
             data.wasClicked = entries[n][0];
-            
+
             _setView(i);
+            _setObstacle();
             n++;
         }));
     }

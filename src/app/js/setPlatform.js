@@ -9,12 +9,12 @@ export default (() => {
 
     function __init__() {
         data.platform = _createElem();
-        _setCell(data.platform);
+        _setCell();
 
         document.body.append(data.platform);
     }
 
-    function _setCell(parent) {
+    function _setCell() {
         for (let i = 0; i < (data.row * data.row); i++) {
             const e = document.createElement('div');
             e.setAttribute('empty', true);
@@ -28,7 +28,7 @@ export default (() => {
                 height: ${data.sizeOfcell}px;
             `;
 
-            parent.append(e);
+            data.platform.append(e);
             data.cell.push(e);
         }
     }
