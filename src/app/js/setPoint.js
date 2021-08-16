@@ -1,23 +1,15 @@
-
 import {
     data
 } from "../data.js";
-import _setView from "./setView.js";
-import _setObstacle from "./setObstacle.js";
 
-export default (() => {
-    data.point = {
-        start: '#ff4646',
-        finish: '#00e700',
-    }
-
+export default ((e, ind) => {
     let entries = Object.entries(data.point);
 
     function __init__() {
-        _setListener();
+        _setActiveCell();
     }
 
-    function _createElem(ind) {
+    function _createElem() {
         const e = document.createElement('span');
 
         e.id = 'text';
@@ -32,22 +24,11 @@ export default (() => {
         return e;
     }
 
-    function _setListener() {
-        data.view = {},
-            Object.keys(data.point).forEach(key => data.view[key] = {});
-
-        let n = 0;
-        data.cell.forEach((cell, ord) => cell.addEventListener('click', (e, i = ord) => {
-            if (entries.length <= n) return;
-            e.currentTarget.append(_createElem(n));
-            e.currentTarget.style.background = `${entries[n][1]}`;
-            e.currentTarget.setAttribute('empty', false);
-            data.wasClicked = entries[n][0];
-
-            _setView(i);
-            _setObstacle();
-            n++;
-        }));
+    function _setActiveCell() {
+        e.currentTarget.append(_createElem());
+        e.currentTarget.style.background = `${entries[ind][1]}`;
+        e.currentTarget.setAttribute('empty', false);
+        data.wasClicked = entries[ind][0];
     }
 
     __init__();

@@ -3,5 +3,6 @@ import {
 } from "../data.js";
 
 export default (() => {
-    // console.log(data);
+    console.log(data);
+    
 })

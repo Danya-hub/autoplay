@@ -5,7 +5,7 @@ import {
 export default (() => {
     data.cell = [];
     data.sizeOfParent = Math.min(document.body.clientWidth, document.body.clientHeight) * 0.8;
-    data.sizeOfcell = data.sizeOfParent / data.row;
+    data.sizeOfcell = data.sizeOfParent / data.numCellInRow;
 
     function __init__() {
         data.platform = _createElem();
@@ -15,7 +15,7 @@ export default (() => {
     }
 
     function _setCell() {
-        for (let i = 0; i < (data.row * data.row); i++) {
+        for (let i = 0; i < (data.numCellInRow * data.numCellInRow); i++) {
             const e = document.createElement('div');
             e.setAttribute('empty', true);
             e.id = i;
@@ -23,7 +23,8 @@ export default (() => {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0);
+                background: #000; 
+                box-shadow: inset 0px 0px 0px 1px rgba(255, 255, 255);
                 width: ${data.sizeOfcell}px;
                 height: ${data.sizeOfcell}px;
             `;
@@ -40,7 +41,7 @@ export default (() => {
             position: absolute;
             display: flex;
             flex-wrap: wrap;
-            box-shadow: inset 0px 0px 0px 2px rgba(0, 0, 0);
+            box-shadow: 0px 0px 0px 1px rgba(0, 0, 0);
             width: ${data.sizeOfParent}px;
             height: ${data.sizeOfParent}px;
             transform: translate(-50%, -50%);
