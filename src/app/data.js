@@ -4,6 +4,6 @@ export const data = {
         start: '#ff4646',
         finish: '#00e700',
     },
-    numCellInRow: 10,
+    row: 10,
     range: 2,
 }

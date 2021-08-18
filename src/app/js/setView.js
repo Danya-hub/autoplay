@@ -4,7 +4,7 @@ import {
 
 export default ((_index) => {
     let arr = [];
-    let point = Object.entries(data.point)
+    let point = Object.entries(data.point);
 
     function __init__() {
         data.view[data.wasClicked].center = {
@@ -17,18 +17,18 @@ export default ((_index) => {
     }
 
     function _findY(_num) {
-        return Math.ceil((_num + 1) / data.numCellInRow);
+        return Math.ceil((_num + 1) / data.row);
     }
 
     function _findX(_num) {
-        return data.numCellInRow - (_findY(_num) * 10 - (_num + 1));
+        return data.row - (_findY(_num) * 10 - (_num + 1));
     }
 
     function _isRangeOut(_num, _dir) {
         let column = _findY(_num) * 10,
             ord = column - _num;
 
-        return ord == 1 && _dir == 'left' || ord == data.numCellInRow && _dir == 'right';
+        return ord == 1 && _dir == 'left' || ord == data.row && _dir == 'right';
     }
 
     function _getElemFromRange(_dir) {
@@ -36,7 +36,7 @@ export default ((_index) => {
 
         data.view[data.wasClicked][_dir] = [];
         for (let i = 1; i <= data.range; i++) {
-            let ord = _dir == 'top' ? _index - (i * data.numCellInRow) : _dir == 'bottom' ? _index + (i * data.numCellInRow) : _dir == 'left' && !_isRangeOut(_index - i, _dir) ? (_index - i) : (_dir == 'right' && !_isRangeOut(_index + i, _dir) ? (_index + i) : undefined);
+            let ord = _dir == 'top' ? _index - (i * data.row) : _dir == 'bottom' ? _index + (i * data.row) : _dir == 'left' && !_isRangeOut(_index - i, _dir) ? (_index - i) : (_dir == 'right' && !_isRangeOut(_index + i, _dir) ? (_index + i) : undefined);
 
             let e = data.cell[ord];
             e == undefined ? wasOutside = true : null,

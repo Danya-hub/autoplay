@@ -5,7 +5,7 @@ import {
 export default (() => {
     data.cell = [];
     data.sizeOfParent = Math.min(document.body.clientWidth, document.body.clientHeight) * 0.8;
-    data.sizeOfcell = data.sizeOfParent / data.numCellInRow;
+    data.sizeOfcell = data.sizeOfParent / data.row;
 
     function __init__() {
         data.platform = _createElem();
@@ -15,7 +15,7 @@ export default (() => {
     }
 
     function _setCell() {
-        for (let i = 0; i < (data.numCellInRow * data.numCellInRow); i++) {
+        for (let i = 0; i < (data.row * data.row); i++) {
             const e = document.createElement('div');
             e.setAttribute('empty', true);
             e.id = i;
