@@ -26,9 +26,9 @@ export default ((_index) => {
 
     function _isRangeOut(_num, _dir) {
         let column = _findY(_num) * 10,
-            ord = column - _num;
+            row = column - _num;
 
-        return ord == 1 && _dir == 'left' || ord == data.row && _dir == 'right';
+        return row == 1 && _dir == 'left' || row == data.row && _dir == 'right';
     }
 
     function _getElemFromRange(_dir) {

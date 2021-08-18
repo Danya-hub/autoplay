@@ -3,33 +3,33 @@ import {
 } from "../data.js";
 
 export default (() => {
-    let arr = [];
+    let path = {};
 
     function __init__() {
         _setPath(data.nearDir);
 
-        // console.log(data);
+        console.log(path);
     }
 
     function _getIndex(_coord) {
         return (_coord.y - 1) * 10 + (_coord.x - 1)
     }
 
-    function _createElem(_obj) {
+    function _createElem(_obj, _dir) {
         _obj.elem = data.cell[_getIndex(_obj)];
         _obj.elem.setAttribute('empty', false),
             _obj.elem.style.background = '#fff';
-        arr.push(_obj);
+        path[_dir].push(_obj);
     }
 
     function _wasFound() {
-        let found = false;
+        let bool = false;
         for (const key in data.view.finish) {
             let entries = data.view.finish[key];
             entries.length ? entries.forEach(obj => !_setBoolen(obj.elem.getAttribute('empty')) ? bool = true : null) : null;
         }
 
-        return found;
+        return bool;
     }
 
     function _getElemFromArr(_arr, _selectElem) {
@@ -41,8 +41,9 @@ export default (() => {
     }
 
     function _setPath(_dir) {
-        _createElem(data.view.start[_dir][0]);
-        
+        path[_dir] = [];
+        _createElem(data.view.start[_dir][0], _dir);
+
         let isFound = false;
         let n = 0;
         while (!isFound) {
@@ -55,11 +56,11 @@ export default (() => {
 
             let distrAxis = _getElemFromArr(axis, axis[rand]);
             let obj = {
-                [distrAxis[0]]: eval(`${arr[n][distrAxis[0]]} ${sign[rand]} 1`),
-                [distrAxis[1]]: arr[n][distrAxis[1]],
+                [distrAxis[0]]: eval(`${path[_dir][n][distrAxis[0]]} ${sign[rand]} 1`),
+                [distrAxis[1]]: path[_dir][n][distrAxis[1]],
             };
 
-            data.cell[_getIndex(obj)] && _setBoolen(data.cell[_getIndex(obj)].getAttribute('empty')) ? (_createElem(obj), n++) : null;
+            data.cell[_getIndex(obj)] && _setBoolen(data.cell[_getIndex(obj)].getAttribute('empty')) ? (_createElem(obj, _dir), n++) : null;
         }
     }
 

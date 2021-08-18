@@ -3,18 +3,15 @@ import {
 } from "../data.js";
 
 export default (() => {
-    data.cell = [];
-    data.sizeOfParent = Math.min(document.body.clientWidth, document.body.clientHeight) * 0.8;
-    data.sizeOfcell = data.sizeOfParent / data.row;
-
     function __init__() {
-        data.platform = _createElem();
-        _setCell();
+        data.platform = _createPlatform(),
+            data.cell = [];
 
+        _createCell();
         document.body.append(data.platform);
     }
 
-    function _setCell() {
+    function _createCell() {
         for (let i = 0; i < (data.row * data.row); i++) {
             const e = document.createElement('div');
             e.setAttribute('empty', true);
@@ -25,8 +22,8 @@ export default (() => {
                 align-items: center;
                 background: #000; 
                 box-shadow: inset 0px 0px 0px 1px rgba(255, 255, 255);
-                width: ${data.sizeOfcell}px;
-                height: ${data.sizeOfcell}px;
+                width: ${data.sizeOfCell}px;
+                height: ${data.sizeOfCell}px;
             `;
 
             data.platform.append(e);
@@ -34,7 +31,7 @@ export default (() => {
         }
     }
 
-    function _createElem() {
+    function _createPlatform() {
         let e = document.createElement('div');
         e.id = 'platform';
         e.style.cssText = `

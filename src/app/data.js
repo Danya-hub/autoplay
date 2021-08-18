@@ -7,3 +7,10 @@ export const data = {
     row: 10,
     range: 2,
 }
+
+function settings() {
+    data.sizeOfParent = Math.min(document.body.clientWidth, document.body.clientHeight) * 0.8,
+        data.sizeOfCell = data.sizeOfParent / data.row;
+}
+
+settings();
