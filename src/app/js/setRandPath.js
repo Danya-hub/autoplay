@@ -8,7 +8,7 @@ export default (() => {
     function __init__() {
         _setPath(data.nearDir);
 
-        console.log(path);
+        // console.log(path);
     }
 
     function _getIndex(_coord) {
@@ -33,12 +33,20 @@ export default (() => {
     }
 
     function _getElemFromArr(_arr, _selectElem) {
-        return [_arr.find((e, i) => e == _selectElem ? _arr.splice(i, 1) : null), _arr];
+        return _arr.concat([_arr.find((e, i) => e == _selectElem ? _arr.splice(i, 1) : null)]);
     }
 
     function _setBoolen(_str) {
         return _str == 'true' ? true : false;
     }
+
+    function _isOutsidePlatform(_obj, _sign) {
+        let bool = false;
+        for (const key in _obj) _obj[key] == data.row && _sign == '+' || _obj[key] == 0 && _sign == '-' ? bool = true : null;
+
+        return bool;
+    }
+
 
     function _setPath(_dir) {
         path[_dir] = [];
@@ -52,15 +60,17 @@ export default (() => {
 
             let axis = ['x', 'y'],
                 sign = ['+', '-'];
-            let rand = Math.round(Math.random());
 
-            let distrAxis = _getElemFromArr(axis, axis[rand]);
+            let distrAxis = _getElemFromArr(axis, axis[Math.round(Math.random())]);
+            let rand = Math.round(Math.random());
             let obj = {
-                [distrAxis[0]]: eval(`${path[_dir][n][distrAxis[0]]} ${sign[rand]} 1`),
-                [distrAxis[1]]: path[_dir][n][distrAxis[1]],
+                [distrAxis[0]]: path[_dir][n][distrAxis[0]],
+                [distrAxis[1]]: eval(`${path[_dir][n][distrAxis[1]]} ${sign[rand]} 1`),
             };
 
-            data.cell[_getIndex(obj)] && _setBoolen(data.cell[_getIndex(obj)].getAttribute('empty')) ? (_createElem(obj, _dir), n++) : null;
+            !_isOutsidePlatform(obj, sign[rand]) && data.cell[_getIndex(obj)] && _setBoolen(data.cell[_getIndex(obj)].getAttribute('empty')) ? (
+                _createElem(obj, _dir), n++
+            ) : null;
         }
     }
 

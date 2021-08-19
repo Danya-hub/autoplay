@@ -24,7 +24,7 @@ export default ((_index) => {
         return data.row - (_findY(_num) * 10 - (_num + 1));
     }
 
-    function _isRangeOut(_num, _dir) {
+    function _isOutsidePlatform(_num, _dir) {
         let column = _findY(_num) * 10,
             row = column - _num;
 
@@ -36,7 +36,7 @@ export default ((_index) => {
 
         data.view[data.wasClicked][_dir] = [];
         for (let i = 1; i <= data.range; i++) {
-            let ord = _dir == 'top' ? _index - (i * data.row) : _dir == 'bottom' ? _index + (i * data.row) : _dir == 'left' && !_isRangeOut(_index - i, _dir) ? (_index - i) : (_dir == 'right' && !_isRangeOut(_index + i, _dir) ? (_index + i) : undefined);
+            let ord = _dir == 'top' ? _index - (i * data.row) : _dir == 'bottom' ? _index + (i * data.row) : _dir == 'left' && !_isOutsidePlatform(_index - i, _dir) ? (_index - i) : (_dir == 'right' && !_isOutsidePlatform(_index + i, _dir) ? (_index + i) : undefined);
 
             let e = data.cell[ord];
             e == undefined ? wasOutside = true : null,
