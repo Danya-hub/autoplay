@@ -3,8 +3,8 @@ import {
 } from "../data.js";
 
 export default ((_index) => {
-    let arr = [];
-    let point = Object.entries(data.point);
+    let obj = {};
+    let pointName = Object.keys(data.point);
 
     function __init__() {
         data.view[data.wasClicked].center = {
@@ -47,15 +47,15 @@ export default ((_index) => {
                 });
         }!data.view[data.wasClicked][_dir].length ? delete data.view[data.wasClicked][_dir] : null;
 
-        point[point.length - 1][0] == data.wasClicked ? _findNearDir(_dir) : null;
+        data.view.start[_dir] && pointName[pointName.length - 1] == data.wasClicked ? _findNearDir(_dir) : null;
     }
 
     function _findNearDir(_dir) {
-        let coordAxis = data.view.start[_dir][data.view.start[_dir].length - 1],
-            coordCenter = data.view.finish.center;
+        let lastPoint = data.view.start[_dir][data.view.start[_dir].length - 1],
+            centerPoint = data.view.finish.center;
 
-        arr.push(Math.sqrt(Math.pow((coordCenter.x - coordAxis.x), 2) + Math.pow((coordCenter.y - coordAxis.y), 2)));
-        arr.find((num, i) => num == Math.min(...arr) ? data.nearDir = data.direction[i] : null);
+        obj[_dir] = Math.sqrt(Math.pow((centerPoint.x - lastPoint.x), 2) + Math.pow((centerPoint.y - lastPoint.y), 2));
+        Object.values(obj).find((num, i) => num == Math.min(...Object.values(obj)) ? data.nearDir = Object.keys(obj)[i] : null);
     }
 
     __init__();

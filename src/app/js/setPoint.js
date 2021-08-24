@@ -2,7 +2,7 @@ import {
     data
 } from "../data.js";
 
-export default ((e, ind) => {
+export default ((e, ord) => {
     let entries = Object.entries(data.point);
 
     function __init__() {
@@ -19,16 +19,16 @@ export default ((e, ind) => {
             text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.7);
             color: #fff;
         `;
-        e.textContent = entries[ind][0];
+        e.textContent = entries[ord][0];
 
         return e;
     }
 
     function _setActiveCell() {
         e.currentTarget.append(_createElem());
-        e.currentTarget.style.background = `${entries[ind][1]}`;
+        e.currentTarget.style.background = `${entries[ord][1]}`;
         e.currentTarget.setAttribute('empty', false);
-        data.wasClicked = entries[ind][0];
+        data.wasClicked = entries[ord][0];
     }
 
     __init__();

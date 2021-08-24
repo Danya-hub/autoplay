@@ -7,8 +7,6 @@ export default (() => {
 
     function __init__() {
         _setPath(data.nearDir);
-
-        // console.log(path);
     }
 
     function _getIndex(_coord) {
@@ -26,7 +24,7 @@ export default (() => {
         let bool = false;
         for (const key in data.view.finish) {
             let entries = data.view.finish[key];
-            entries.length ? entries.forEach(obj => !_setBoolen(obj.elem.getAttribute('empty')) ? bool = true : null) : null;
+            entries.length ? (!_setBoolen(entries[0].elem.getAttribute('empty')) ? bool = true : null) : null;
         }
 
         return bool;
@@ -42,7 +40,7 @@ export default (() => {
 
     function _isOutsidePlatform(_obj, _sign) {
         let bool = false;
-        for (const key in _obj) _obj[key] == data.row && _sign == '+' || _obj[key] == 0 && _sign == '-' ? bool = true : null;
+        for (const key in _obj) _obj[key] > data.row && _sign == '+' || _obj[key] < 1 && _sign == '-' ? bool = true : null;
 
         return bool;
     }
@@ -61,14 +59,15 @@ export default (() => {
             let axis = ['x', 'y'],
                 sign = ['+', '-'];
 
-            let distrAxis = _getElemFromArr(axis, axis[Math.round(Math.random())]);
-            let rand = Math.round(Math.random());
+            let detachAxis = _getElemFromArr(axis, axis[Math.round(Math.random())]);
+            let selectSign = sign[Math.round(Math.random())];
             let obj = {
-                [distrAxis[0]]: path[_dir][n][distrAxis[0]],
-                [distrAxis[1]]: eval(`${path[_dir][n][distrAxis[1]]} ${sign[rand]} 1`),
+                [detachAxis[0]]: path[_dir][n][detachAxis[0]],
+                [detachAxis[1]]: eval(`${path[_dir][n][detachAxis[1]]} ${selectSign} 1`),
             };
+            let isOutside = detachAxis[1] == 'y' ? data.cell[_getIndex(obj)] : detachAxis[1] == 'x' ? !_isOutsidePlatform(obj, selectSign) : false;
 
-            !_isOutsidePlatform(obj, sign[rand]) && data.cell[_getIndex(obj)] && _setBoolen(data.cell[_getIndex(obj)].getAttribute('empty')) ? (
+            isOutside && _setBoolen(data.cell[_getIndex(obj)].getAttribute('empty')) ? (
                 _createElem(obj, _dir), n++
             ) : null;
         }
