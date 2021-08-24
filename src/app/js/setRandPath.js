@@ -65,9 +65,8 @@ export default (() => {
                 [detachAxis[0]]: path[_dir][n][detachAxis[0]],
                 [detachAxis[1]]: eval(`${path[_dir][n][detachAxis[1]]} ${selectSign} 1`),
             };
-            let isOutside = detachAxis[1] == 'y' ? data.cell[_getIndex(obj)] : detachAxis[1] == 'x' ? !_isOutsidePlatform(obj, selectSign) : false;
 
-            isOutside && _setBoolen(data.cell[_getIndex(obj)].getAttribute('empty')) ? (
+            (detachAxis[1] == 'y' ? data.cell[_getIndex(obj)] : detachAxis[1] == 'x' ? !_isOutsidePlatform(obj, selectSign) : false) && _setBoolen(data.cell[_getIndex(obj)].getAttribute('empty')) ? (
                 _createElem(obj, _dir), n++
             ) : null;
         }
