@@ -1,11 +1,17 @@
 import {
     data
 } from "../data.js";
+import {
+    _setBoolen
+} from "../common.js";
+import setView from "./setView.js";
 
 export default (() => {
-    let path = {};
+    let path = {},
+        view = {};
 
     function __init__() {
+        console.log(data);
         _setPath(data.nearDir);
     }
 
@@ -18,6 +24,8 @@ export default (() => {
         _obj.elem.setAttribute('empty', false),
             _obj.elem.style.background = '#fff';
         path[_dir].push(_obj);
+
+        setView(view, _getIndex(_obj))
     }
 
     function _wasFound() {
@@ -34,17 +42,12 @@ export default (() => {
         return _arr.concat([_arr.find((e, i) => e == _selectElem ? _arr.splice(i, 1) : null)]);
     }
 
-    function _setBoolen(_str) {
-        return _str == 'true' ? true : false;
-    }
-
     function _isOutsidePlatform(_obj, _sign) {
         let bool = false;
         for (const key in _obj) _obj[key] > data.row && _sign == '+' || _obj[key] < 1 && _sign == '-' ? bool = true : null;
 
         return bool;
     }
-
 
     function _setPath(_dir) {
         path[_dir] = [];
@@ -69,6 +72,7 @@ export default (() => {
             (detachAxis[1] == 'y' ? data.cell[_getIndex(obj)] : detachAxis[1] == 'x' ? !_isOutsidePlatform(obj, selectSign) : false) && _setBoolen(data.cell[_getIndex(obj)].getAttribute('empty')) ? (
                 _createElem(obj, _dir), n++
             ) : null;
+            console.log(view);
         }
     }
 

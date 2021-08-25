@@ -28,7 +28,7 @@ export default ((e, ord) => {
         e.currentTarget.append(_createElem());
         e.currentTarget.style.background = `${entries[ord][1]}`;
         e.currentTarget.setAttribute('empty', false);
-        data.wasClicked = entries[ord][0];
+        data.clicked.push(entries[ord][0]);
     }
 
     __init__();

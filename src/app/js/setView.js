@@ -1,19 +1,21 @@
 import {
     data
 } from "../data.js";
+import { _setBoolen } from "../common.js";
 
-export default ((_index) => {
-    let obj = {};
-    let pointName = Object.keys(data.point);
-
+export default ((_obj, _index) => {
     function __init__() {
-        data.view[data.wasClicked].center = {
+        _hasProperty(_obj, data.clicked[data.clicked.length - 1]).center = {
             elem: data.cell[_index],
             x: _findX(_index),
             y: _findY(_index),
         };
 
         data.direction.forEach(dir => _getElemFromRange(dir));
+    }
+
+    function _hasProperty(_obj, _prop) {
+        return _obj[_prop] ? _obj[_prop] : _obj;
     }
 
     function _findY(_num) {
@@ -34,28 +36,18 @@ export default ((_index) => {
     function _getElemFromRange(_dir) {
         let wasOutside = false;
 
-        data.view[data.wasClicked][_dir] = [];
+        _hasProperty(_obj, data.clicked[data.clicked.length - 1])[_dir] = [];
         for (let i = 1; i <= data.range; i++) {
             let ord = _dir == 'top' ? _index - (i * data.row) : _dir == 'bottom' ? _index + (i * data.row) : _dir == 'left' && !_isOutsidePlatform(_index - i, _dir) ? (_index - i) : (_dir == 'right' && !_isOutsidePlatform(_index + i, _dir) ? (_index + i) : undefined);
 
             let e = data.cell[ord];
-            e == undefined ? wasOutside = true : null,
-                wasOutside ? null : data.view[data.wasClicked][_dir].push({
+            e == undefined || !_setBoolen(e.getAttribute('empty')) ? wasOutside = true : null,
+                wasOutside ? null : _hasProperty(_obj, data.clicked[data.clicked.length - 1])[_dir].push({
                     elem: e,
                     x: _findX(ord),
                     y: _findY(ord),
                 });
-        }!data.view[data.wasClicked][_dir].length ? delete data.view[data.wasClicked][_dir] : null;
-
-        data.view.start[_dir] && pointName[pointName.length - 1] == data.wasClicked ? _findNearDir(_dir) : null;
-    }
-
-    function _findNearDir(_dir) {
-        let lastPoint = data.view.start[_dir][data.view.start[_dir].length - 1],
-            centerPoint = data.view.finish.center;
-
-        obj[_dir] = Math.sqrt(Math.pow((centerPoint.x - lastPoint.x), 2) + Math.pow((centerPoint.y - lastPoint.y), 2));
-        Object.values(obj).find((num, i) => num == Math.min(...Object.values(obj)) ? data.nearDir = Object.keys(obj)[i] : null);
+        }!_hasProperty(_obj, data.clicked[data.clicked.length - 1])[_dir].length ? delete _hasProperty(_obj, data.clicked[data.clicked.length - 1])[_dir] : null;
     }
 
     __init__();
