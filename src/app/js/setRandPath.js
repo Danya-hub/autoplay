@@ -4,14 +4,13 @@ import {
 import {
     _setBoolen
 } from "../common.js";
-import setView from "./setView.js";
+import _setView from "./setView.js";
 
 export default (() => {
-    let path = {},
-        view = {};
+    let path = null,
+        view = null;
 
     function __init__() {
-        console.log(data);
         _setPath(data.nearDir);
     }
 
@@ -19,13 +18,11 @@ export default (() => {
         return (_coord.y - 1) * 10 + (_coord.x - 1)
     }
 
-    function _createElem(_obj, _dir) {
-        _obj.elem = data.cell[_getIndex(_obj)];
-        _obj.elem.setAttribute('empty', false),
-            _obj.elem.style.background = '#fff';
-        path[_dir].push(_obj);
-
-        setView(view, _getIndex(_obj))
+    function _createElem(_obj) {
+        let elem = data.cell[_getIndex(_obj)];
+        elem.setAttribute('empty', false),
+            elem.style.background = '#fff';
+        path.push(_obj);
     }
 
     function _wasFound() {
@@ -39,19 +36,22 @@ export default (() => {
     }
 
     function _getElemFromArr(_arr, _selectElem) {
-        return _arr.concat([_arr.find((e, i) => e == _selectElem ? _arr.splice(i, 1) : null)]);
+        return _arr.concat([_arr.find((e, i) => e == _selectElem ? _arr.splice(i, 1) : null)]); //!
     }
 
-    function _isOutsidePlatform(_obj, _sign) {
+    function _hasElemInRange(_elem, _obj) {
         let bool = false;
-        for (const key in _obj) _obj[key] > data.row && _sign == '+' || _obj[key] < 1 && _sign == '-' ? bool = true : null;
+        for (const key in _obj) {
+            _obj[key].length ? _obj[key].some(obj => _elem == obj.elem ? bool = true : null) : null;
+        }
 
         return bool;
     }
 
     function _setPath(_dir) {
-        path[_dir] = [];
-        _createElem(data.view.start[_dir][0], _dir);
+        path = [],
+            view = {};
+        _createElem(data.view.start[_dir][0]);
 
         let isFound = false;
         let n = 0;
@@ -61,18 +61,18 @@ export default (() => {
 
             let axis = ['x', 'y'],
                 sign = ['+', '-'];
+            let detachAxis = _getElemFromArr(axis, axis[Math.round(Math.random())]),
+                selectSign = sign[Math.round(Math.random())];
 
-            let detachAxis = _getElemFromArr(axis, axis[Math.round(Math.random())]);
-            let selectSign = sign[Math.round(Math.random())];
-            let obj = {
-                [detachAxis[0]]: path[_dir][n][detachAxis[0]],
-                [detachAxis[1]]: eval(`${path[_dir][n][detachAxis[1]]} ${selectSign} 1`),
-            };
+            let coord = {
+                [detachAxis[0]]: path[n][detachAxis[0]],
+                [detachAxis[1]]: eval(`${path[n][detachAxis[1]]} ${selectSign} 1`),
+            }
+            _setView(view, _getIndex(path[path.length - 1]));
 
-            (detachAxis[1] == 'y' ? data.cell[_getIndex(obj)] : detachAxis[1] == 'x' ? !_isOutsidePlatform(obj, selectSign) : false) && _setBoolen(data.cell[_getIndex(obj)].getAttribute('empty')) ? (
-                _createElem(obj, _dir), n++
+            _hasElemInRange(data.cell[_getIndex(coord)], view) ? (
+                _createElem(coord), n++
             ) : null;
-            console.log(view);
         }
     }
 
