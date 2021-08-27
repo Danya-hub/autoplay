@@ -1,5 +1,8 @@
 export const data = {
-    direction: ['top', 'bottom', 'left', 'right'],
+    axis: {
+        x: ['left', 'right'],
+        y: ['top', 'bottom'], 
+    },
     point: {
         start: '#ff4646',
         finish: '#00e700',

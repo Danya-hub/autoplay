@@ -2,7 +2,8 @@ import {
     data
 } from "../data.js";
 import {
-    _setBoolen
+    _setBoolen,
+    _getElemFromArr,
 } from "../common.js";
 import _setView from "./setView.js";
 
@@ -35,17 +36,18 @@ export default (() => {
         return bool;
     }
 
-    function _getElemFromArr(_arr, _selectElem) {
-        return _arr.concat([_arr.find((e, i) => e == _selectElem ? _arr.splice(i, 1) : null)]); //!
-    }
-
     function _hasElemInRange(_elem, _obj) {
+        // console.dir(_elem.attributes.empty.value);
         let bool = false;
         for (const key in _obj) {
             _obj[key].length ? _obj[key].some(obj => _elem == obj.elem ? bool = true : null) : null;
         }
 
         return bool;
+    }
+
+    function _hasSpace(_obj) {
+        console.log(_obj);
     }
 
     function _setPath(_dir) {
@@ -65,11 +67,12 @@ export default (() => {
                 selectSign = sign[Math.round(Math.random())];
 
             let coord = {
-                [detachAxis[0]]: path[n][detachAxis[0]],
-                [detachAxis[1]]: eval(`${path[n][detachAxis[1]]} ${selectSign} 1`),
+                [detachAxis[0]]: eval(`${path[n][detachAxis[0]]} ${selectSign} 1`),
+                [detachAxis[1]]: path[n][detachAxis[1]],
             }
             _setView(view, _getIndex(path[path.length - 1]));
 
+            _hasSpace(view)
             _hasElemInRange(data.cell[_getIndex(coord)], view) ? (
                 _createElem(coord), n++
             ) : null;
