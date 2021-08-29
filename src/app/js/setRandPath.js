@@ -40,20 +40,22 @@ export default (() => {
         // console.dir(_elem.attributes.empty.value);
         let bool = false;
         for (const key in _obj) {
-            _obj[key].length ? _obj[key].some(obj => _elem == obj.elem ? bool = true : null) : null;
+            let arr = data.corner.waypoints ? _obj[key][0] : _obj[key];
+            _obj[key].length ? arr.some(obj => _elem == obj.elem ? bool = true : null): null;
         }
 
         return bool;
     }
 
-    function _hasSpace(_obj) {
+    function _isCloseCorner(_elem, _obj) {
         console.log(_obj);
+        console.log(_elem);
     }
 
     function _setPath(_dir) {
         path = [],
             view = {};
-        _createElem(data.view.start[_dir][0]);
+        _createElem(data.corner.mainPoint ? data.view.start[_dir][0][0] : data.view.start[_dir][0]);
 
         let isFound = false;
         let n = 0;
@@ -70,9 +72,9 @@ export default (() => {
                 [detachAxis[0]]: eval(`${path[n][detachAxis[0]]} ${selectSign} 1`),
                 [detachAxis[1]]: path[n][detachAxis[1]],
             }
-            _setView(view, _getIndex(path[path.length - 1]));
+            _setView(view, _getIndex(path[path.length - 1]), data.corner.waypoints);
 
-            _hasSpace(view)
+            // _isCloseCorner(data.cell[_getIndex(coord)], view)
             _hasElemInRange(data.cell[_getIndex(coord)], view) ? (
                 _createElem(coord), n++
             ) : null;

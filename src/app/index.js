@@ -13,16 +13,17 @@ import _setRandPath from "./js/setRandPath.js";
 _setPlatform();
 
 let point = Object.entries(data.point);
-data.view = {},
+
+data.clicked = [],
+    data.view = {},
     point.forEach(e => data.view[e[0]] = {});
-data.clicked = [];
 
 let n = 0;
 data.cell.forEach((cell, ord) => cell.addEventListener('click', (e, i = ord) => {
     if (point.length <= n) return;
 
     _setPoint(e, n);
-    _setView(data.view, i);
+    _setView(data.view, i, data.corner.mainPoint);
     n++;
 
     if (point[point.length - 1][0] != data.clicked[data.clicked.length - 1]) return;

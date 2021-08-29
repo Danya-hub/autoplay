@@ -7,13 +7,12 @@ import {
     _getElemFromArr,
 } from "../common.js";
 
-export default ((_obj, _index, corner) => {
+export default ((_obj, _index, _corner) => {
     function __init__() {
         let direction = Object.values(data.axis).flat();
         _hasProperty(_obj, data.clicked[data.clicked.length - 1]).center = _setObject(data.cell[_index], _findX(_index), _findY(_index));
-
-        direction.forEach(dir => _getElemFromRange(dir)); //! нужно совместить 
-        direction.forEach(dir => _setCornerView(dir)); //! нужно совместить 
+        direction.forEach(dir => _getElemFromRange(dir));
+        _corner ? direction.forEach(dir => _setCornerView(dir)) : null;
     }
 
     function _setObject(_elem, _x, _y) {
@@ -25,11 +24,18 @@ export default ((_obj, _index, corner) => {
     }
 
     function _setCornerView(_dir) {
-        let ord = 0;
+        let sepArr = [];
         data.axis[_getElemFromArr(Object.keys(data.axis), _getAxisFromDir(_dir))[1]].forEach(cornDir => {
-            ord = _setOrder(cornDir, _index, 1, _dir == 'left' ? -1 : _dir == 'right' ? 1 : _dir == 'top' ? -data.row : data.row);
-            data.view[data.clicked[data.clicked.length - 1]][cornDir].push(_setObject(data.cell[ord], _findX(ord), _findY(ord)));
+            let ord = _setOrder(cornDir, _index, 1, _dir == 'left' ? -1 : _dir == 'right' ? 1 : _dir == 'top' ? -data.row : data.row);
+            data.cell[ord] ? sepArr.push(_setObject(data.cell[ord], _findX(ord), _findY(ord))) : null;
         });
+
+        (_obj[data.clicked[data.clicked.length - 1]] || _obj)[_dir].push(sepArr);
+        _deleteProperty(_dir); //?
+    }
+
+    function _deleteProperty(_dir) {
+        !_hasProperty(_obj, data.clicked[data.clicked.length - 1])[_dir].length ? delete _hasProperty(_obj, data.clicked[data.clicked.length - 1])[_dir] : null;
     }
 
     function _hasProperty(_obj, _prop) {
@@ -47,7 +53,6 @@ export default ((_obj, _index, corner) => {
     function _isOutsidePlatform(_num, _dir) {
         let column = _findY(_num) * 10,
             row = column - _num;
-
         return row == 1 && _dir == 'left' || row == data.row && _dir == 'right';
     }
 
@@ -56,16 +61,14 @@ export default ((_obj, _index, corner) => {
     }
 
     function _getElemFromRange(_dir) {
+        let sepArr = [],
+        arrDir = _hasProperty(_obj, data.clicked[data.clicked.length - 1])[_dir] = [];
+        
         let wasOutside = false;
-        _hasProperty(_obj, data.clicked[data.clicked.length - 1])[_dir] = [];
         for (let i = 1; i <= data.range; i++) {
             let ord = _setOrder(_dir, _index, i);
-
-            let e = data.cell[ord];
-            e == undefined || !_setBoolen(e.getAttribute('empty')) ? wasOutside = true : null,
-                wasOutside ? null : _hasProperty(_obj, data.clicked[data.clicked.length - 1])[_dir].push(_setObject(e, _findX(ord), _findY(ord)));
-        }!_hasProperty(_obj, data.clicked[data.clicked.length - 1])[_dir].length ? delete _hasProperty(_obj, data.clicked[data.clicked.length - 1])[_dir] : null;
+            data.cell[ord] == undefined || !_setBoolen(data.cell[ord].getAttribute('empty')) ? wasOutside = true : null, !wasOutside ? (!_corner ? arrDir : sepArr).push(_setObject(data.cell[ord], _findX(ord), _findY(ord))) : null;
+        }!_corner ? _deleteProperty(_dir) : arrDir.push(sepArr);
     }
-
     __init__();
 })
