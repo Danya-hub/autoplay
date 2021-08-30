@@ -35,6 +35,7 @@ export default ((_obj, _index, _corner) => {
     }
 
     function _deleteProperty(_dir) {
+        // console.log(_hasProperty(_obj, data.clicked[data.clicked.length - 1])[_dir]);
         !_hasProperty(_obj, data.clicked[data.clicked.length - 1])[_dir].length ? delete _hasProperty(_obj, data.clicked[data.clicked.length - 1])[_dir] : null;
     }
 

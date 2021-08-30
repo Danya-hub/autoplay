@@ -37,19 +37,17 @@ export default (() => {
     }
 
     function _hasElemInRange(_elem, _obj) {
-        // console.dir(_elem.attributes.empty.value);
         let bool = false;
-        for (const key in _obj) {
-            let arr = data.corner.waypoints ? _obj[key][0] : _obj[key];
-            _obj[key].length ? arr.some(obj => _elem == obj.elem ? bool = true : null): null;
-        }
-
+        for (const key in _obj) _obj[key].length == data.range ? (data.corner.waypoints ? _obj[key][0] : _obj[key]).some(obj => _elem == obj.elem ? bool = true : null) : null;
+        //????? _obj[key].length == data.range <-- нужно убрать 
         return bool;
     }
 
-    function _isCloseCorner(_elem, _obj) {
-        console.log(_obj);
-        console.log(_elem);
+    function _isAvailableTurn(_obj, _dir) {
+        let bool = true;
+        _obj[_dir][1] ? _obj[_dir][1].forEach(e => bool ? bool = _setBoolen(e.elem.getAttribute('empty')) : null) : null; //?
+
+        return bool;
     }
 
     function _setPath(_dir) {
@@ -74,8 +72,7 @@ export default (() => {
             }
             _setView(view, _getIndex(path[path.length - 1]), data.corner.waypoints);
 
-            // _isCloseCorner(data.cell[_getIndex(coord)], view)
-            _hasElemInRange(data.cell[_getIndex(coord)], view) ? (
+            _hasElemInRange(data.cell[_getIndex(coord)], view) && _isAvailableTurn(view, data.axis[detachAxis[0]].find(dir => selectSign == '+' ? (dir == 'right' || dir == 'bottom') : (dir == 'left' || dir == 'top'))) ? (
                 _createElem(coord), n++
             ) : null;
         }
