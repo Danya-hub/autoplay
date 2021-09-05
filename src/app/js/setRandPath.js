@@ -38,14 +38,14 @@ export default (() => {
 
     function _hasElemInRange(_elem, _obj) {
         let bool = false;
-        for (const key in _obj) _obj[key].length == data.range ? (data.corner.waypoints ? _obj[key][0] : _obj[key]).some(obj => _elem == obj.elem ? bool = true : null) : null;
-        //????? _obj[key].length == data.range <-- нужно убрать 
+        for (const key in _obj) _obj[key].length ? (data.corner.waypoints ? _obj[key][0] : _obj[key]).some(obj => _elem == obj.elem ? bool = true : null) : null;
+
         return bool;
     }
 
     function _isAvailableTurn(_obj, _dir) {
         let bool = true;
-        _obj[_dir][1] ? _obj[_dir][1].forEach(e => bool ? bool = _setBoolen(e.elem.getAttribute('empty')) : null) : null; //?
+        _obj[_dir][1].forEach(e => !e.elem.isEqualNode(data.view.finish.center.elem) ? (bool ? bool = _setBoolen(e.elem.getAttribute('empty')) : null) : bool = true);
 
         return bool;
     }
@@ -55,12 +55,12 @@ export default (() => {
             view = {};
         _createElem(data.corner.mainPoint ? data.view.start[_dir][0][0] : data.view.start[_dir][0]);
 
+        let unsuitDir = [];
         let isFound = false;
         let n = 0;
         while (!isFound) {
             isFound = _wasFound();
             if (isFound) return;
-
             let axis = ['x', 'y'],
                 sign = ['+', '-'];
             let detachAxis = _getElemFromArr(axis, axis[Math.round(Math.random())]),
@@ -71,10 +71,15 @@ export default (() => {
                 [detachAxis[1]]: path[n][detachAxis[1]],
             }
             _setView(view, _getIndex(path[path.length - 1]), data.corner.waypoints);
+            let commDir = data.axis[detachAxis[0]].find(dir => selectSign == '+' ? (dir == 'right' || dir == 'bottom') : (dir == 'left' || dir == 'top'));
 
-            _hasElemInRange(data.cell[_getIndex(coord)], view) && _isAvailableTurn(view, data.axis[detachAxis[0]].find(dir => selectSign == '+' ? (dir == 'right' || dir == 'bottom') : (dir == 'left' || dir == 'top'))) ? (
-                _createElem(coord), n++
-            ) : null;
+            !data.corner.waypoints && _hasElemInRange(data.cell[_getIndex(coord)], view) || 
+            data.corner.waypoints && (_hasElemInRange(data.cell[_getIndex(coord)], view) && _isAvailableTurn(view, commDir)) ? 
+            (_createElem(coord), n++, unsuitDir = []) : null; 
+
+            unsuitDir.every(e => e != commDir) ? unsuitDir.push(commDir) : null;
+            isFound = Object.values(data.axis).flat().length == unsuitDir.length;
+            console.log(unsuitDir);
         }
     }
 

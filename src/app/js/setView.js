@@ -31,12 +31,6 @@ export default ((_obj, _index, _corner) => {
         });
 
         (_obj[data.clicked[data.clicked.length - 1]] || _obj)[_dir].push(sepArr);
-        _deleteProperty(_dir); //?
-    }
-
-    function _deleteProperty(_dir) {
-        // console.log(_hasProperty(_obj, data.clicked[data.clicked.length - 1])[_dir]);
-        !_hasProperty(_obj, data.clicked[data.clicked.length - 1])[_dir].length ? delete _hasProperty(_obj, data.clicked[data.clicked.length - 1])[_dir] : null;
     }
 
     function _hasProperty(_obj, _prop) {
@@ -63,13 +57,14 @@ export default ((_obj, _index, _corner) => {
 
     function _getElemFromRange(_dir) {
         let sepArr = [],
-        arrDir = _hasProperty(_obj, data.clicked[data.clicked.length - 1])[_dir] = [];
-        
+            arrDir = _hasProperty(_obj, data.clicked[data.clicked.length - 1])[_dir] = [];
+
         let wasOutside = false;
         for (let i = 1; i <= data.range; i++) {
             let ord = _setOrder(_dir, _index, i);
-            data.cell[ord] == undefined || !_setBoolen(data.cell[ord].getAttribute('empty')) ? wasOutside = true : null, !wasOutside ? (!_corner ? arrDir : sepArr).push(_setObject(data.cell[ord], _findX(ord), _findY(ord))) : null;
-        }!_corner ? _deleteProperty(_dir) : arrDir.push(sepArr);
+            !data.cell[ord] || !_setBoolen(data.cell[ord].getAttribute('empty')) ? wasOutside = true : null, !wasOutside ? (!_corner ? arrDir : sepArr).push(_setObject(data.cell[ord], _findX(ord), _findY(ord))) : null;
+        }
+        _corner ? arrDir.push(sepArr) : null;
     }
     __init__();
 })
