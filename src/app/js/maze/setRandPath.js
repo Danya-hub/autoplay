@@ -12,6 +12,7 @@ export default (() => {
         view = null;
 
     function __init__() {
+        // _getElemFromArr(Object.values(data.axis).flat(), data.nearDir).forEach(e => _setPath(e))
         _setPath(data.nearDir);
     }
 
@@ -45,7 +46,7 @@ export default (() => {
 
     function _isAvailableTurn(_obj, _dir) {
         let bool = true;
-        _obj[_dir][1].forEach(e => !e.elem.isEqualNode(data.view.finish.center.elem) ? (bool ? bool = _setBoolen(e.elem.getAttribute('empty')) : null) : bool = true);
+        _obj[_dir][1] ? _obj[_dir][1].forEach(e => !e.elem.isEqualNode(data.view.finish.center.elem) ? (bool ? bool = _setBoolen(e.elem.getAttribute('empty')) : null) : bool = true) : null;
 
         return bool;
     }
@@ -77,9 +78,8 @@ export default (() => {
             data.corner.waypoints && (_hasElemInRange(data.cell[_getIndex(coord)], view) && _isAvailableTurn(view, commDir)) ? 
             (_createElem(coord), n++, unsuitDir = []) : null; 
 
-            unsuitDir.every(e => e != commDir) ? unsuitDir.push(commDir) : null;
+            unsuitDir.every(e => e != commDir) ? unsuitDir.push(commDir) : null; //?
             isFound = Object.values(data.axis).flat().length == unsuitDir.length;
-            console.log(unsuitDir);
         }
     }
 

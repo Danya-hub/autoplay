@@ -30,7 +30,7 @@ export default ((_obj, _index, _corner) => {
             data.cell[ord] ? sepArr.push(_setObject(data.cell[ord], _findX(ord), _findY(ord))) : null;
         });
 
-        (_obj[data.clicked[data.clicked.length - 1]] || _obj)[_dir].push(sepArr);
+        sepArr.length == data.range ? (_obj[data.clicked[data.clicked.length - 1]] || _obj)[_dir].push(sepArr) : null;
     }
 
     function _hasProperty(_obj, _prop) {
@@ -58,11 +58,13 @@ export default ((_obj, _index, _corner) => {
     function _getElemFromRange(_dir) {
         let sepArr = [],
             arrDir = _hasProperty(_obj, data.clicked[data.clicked.length - 1])[_dir] = [];
+        let commArr = (!_corner ? arrDir : sepArr);
 
         let wasOutside = false;
         for (let i = 1; i <= data.range; i++) {
             let ord = _setOrder(_dir, _index, i);
-            !data.cell[ord] || !_setBoolen(data.cell[ord].getAttribute('empty')) ? wasOutside = true : null, !wasOutside ? (!_corner ? arrDir : sepArr).push(_setObject(data.cell[ord], _findX(ord), _findY(ord))) : null;
+            !data.cell[ord] || !_setBoolen(data.cell[ord].getAttribute('empty')) ? wasOutside = true : null, !wasOutside ? commArr.push(_setObject(data.cell[ord], _findX(ord), _findY(ord))) : null;
+            commArr.length > 1 ? (!commArr[commArr.length - 1].elem || !_setBoolen(data.cell[ord].getAttribute('empty')) ? _hasProperty(data.clicked[data.clicked.length - 1])[_dir] = [] : null) : null; 
         }
         _corner ? arrDir.push(sepArr) : null;
     }
