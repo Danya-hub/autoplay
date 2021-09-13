@@ -27,10 +27,10 @@ export default ((_obj, _index, _corner) => {
         let sepArr = [];
         data.axis[_getElemFromArr(Object.keys(data.axis), _getAxisFromDir(_dir))[1]].forEach(cornDir => {
             let ord = _setOrder(cornDir, _index, 1, _dir == 'left' ? -1 : _dir == 'right' ? 1 : _dir == 'top' ? -data.row : data.row);
-            data.cell[ord] ? sepArr.push(_setObject(data.cell[ord], _findX(ord), _findY(ord))) : null;
+            data.cell[ord] && !_isOutsidePlatform(ord, _dir) ? sepArr.push(_setObject(data.cell[ord], _findX(ord), _findY(ord))) : null;
         });
 
-        sepArr.length == data.range ? (_obj[data.clicked[data.clicked.length - 1]] || _obj)[_dir].push(sepArr) : null;
+        (_obj[data.clicked[data.clicked.length - 1]] || _obj)[_dir].push(sepArr);
     }
 
     function _hasProperty(_obj, _prop) {
@@ -63,8 +63,10 @@ export default ((_obj, _index, _corner) => {
         let wasOutside = false;
         for (let i = 1; i <= data.range; i++) {
             let ord = _setOrder(_dir, _index, i);
-            !data.cell[ord] || !_setBoolen(data.cell[ord].getAttribute('empty')) ? wasOutside = true : null, !wasOutside ? commArr.push(_setObject(data.cell[ord], _findX(ord), _findY(ord))) : null;
-            commArr.length > 1 ? (!commArr[commArr.length - 1].elem || !_setBoolen(data.cell[ord].getAttribute('empty')) ? _hasProperty(data.clicked[data.clicked.length - 1])[_dir] = [] : null) : null; 
+            !data.cell[ord] ? wasOutside = true : null, 
+            !wasOutside && data.cell[ord] ? commArr.push(_setObject(data.cell[ord], _findX(ord), _findY(ord))) : null;
+
+            // wasOutside && commArr.length ? (!commArr[commArr.length - 1].elem || !_setBoolen(data.cell[ord].getAttribute('empty')) ? _hasProperty(data.clicked[data.clicked.length - 1])[_dir] = [] : null) : null; 
         }
         _corner ? arrDir.push(sepArr) : null;
     }

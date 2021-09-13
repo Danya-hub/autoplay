@@ -2,11 +2,11 @@ import {
     data
 } from "../data.js";
 
-import _setPlatform from "../maze/setPlatform.js";
-import _setPoint from "../maze/setPoint.js";
-import _setView from "../maze/setView.js";
-import _findNearDir from "../maze/findNearDir.js";
-import _setRandPath from "../maze/setRandPath.js";
+import _setPlatform from "./setPlatform.js";
+import _setPoint from "./setPoint.js";
+import _setView from "./setView.js";
+import _findNearDir from "./findNearDir.js";
+import _setRandPath from "./setRandPath.js";
 
 export default () => {
     _setPlatform();

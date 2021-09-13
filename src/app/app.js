@@ -1,5 +1,5 @@
 'use strict';
 
-import maze from "./js/maze/index.js";
+import maze from "./js/maze/maze.js";
 
 maze();

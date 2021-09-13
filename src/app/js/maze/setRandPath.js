@@ -39,8 +39,11 @@ export default (() => {
 
     function _hasElemInRange(_elem, _obj) {
         let bool = false;
-        for (const key in _obj) _obj[key].length ? (data.corner.waypoints ? _obj[key][0] : _obj[key]).some(obj => _elem == obj.elem ? bool = true : null) : null;
-
+        for (const key in _obj) {
+            let arr = data.corner.waypoints ? _obj[key][0] : _obj[key];
+            arr && !bool ? bool = arr.some(obj => obj.elem == _elem) && arr.every(obj => _setBoolen(obj.elem.getAttribute('empty'))) : null;
+        }
+       
         return bool;
     }
 
@@ -60,8 +63,9 @@ export default (() => {
         let isFound = false;
         let n = 0;
         while (!isFound) {
-            isFound = _wasFound();
+            isFound = _wasFound() || Object.values(data.axis).flat().length == unsuitDir.length;
             if (isFound) return;
+
             let axis = ['x', 'y'],
                 sign = ['+', '-'];
             let detachAxis = _getElemFromArr(axis, axis[Math.round(Math.random())]),
@@ -73,13 +77,12 @@ export default (() => {
             }
             _setView(view, _getIndex(path[path.length - 1]), data.corner.waypoints);
             let commDir = data.axis[detachAxis[0]].find(dir => selectSign == '+' ? (dir == 'right' || dir == 'bottom') : (dir == 'left' || dir == 'top'));
+            console.log(view);
 
-            !data.corner.waypoints && _hasElemInRange(data.cell[_getIndex(coord)], view) || 
-            data.corner.waypoints && (_hasElemInRange(data.cell[_getIndex(coord)], view) && _isAvailableTurn(view, commDir)) ? 
-            (_createElem(coord), n++, unsuitDir = []) : null; 
-
-            unsuitDir.every(e => e != commDir) ? unsuitDir.push(commDir) : null; //?
-            isFound = Object.values(data.axis).flat().length == unsuitDir.length;
+            unsuitDir.every(e => e != commDir) ? unsuitDir.push(commDir) : null;
+            (!data.corner.waypoints && _hasElemInRange(data.cell[_getIndex(coord)], view) ||
+                data.corner.waypoints && (_hasElemInRange(data.cell[_getIndex(coord)], view) && _isAvailableTurn(view, commDir))) ?
+            (_createElem(coord), n++, unsuitDir = []) : null;
         }
     }
 
