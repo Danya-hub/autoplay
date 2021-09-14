@@ -12,7 +12,6 @@ export default ((e, ord) => {
     function _createElem() {
         const e = document.createElement('span');
 
-        e.id = 'text';
         e.style.cssText = `
             font: 600 2vmin 'Fira Sans', sans-serif;
             text-transform: uppercase;
@@ -28,6 +27,8 @@ export default ((e, ord) => {
         e.currentTarget.append(_createElem());
         e.currentTarget.style.background = `${entries[ord][1]}`;
         e.currentTarget.setAttribute('empty', false);
+        e.currentTarget.className = 'point';
+        
         data.clicked.push(entries[ord][0]);
     }
 

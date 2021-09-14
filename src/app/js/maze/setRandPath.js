@@ -41,9 +41,10 @@ export default (() => {
         let bool = false;
         for (const key in _obj) {
             let arr = data.corner.waypoints ? _obj[key][0] : _obj[key];
-            arr && !bool ? bool = arr.some(obj => obj.elem == _elem) && arr.every(obj => _setBoolen(obj.elem.getAttribute('empty'))) : null;
+            arr && !bool ? bool = arr.some(obj => obj.elem == _elem && _setBoolen(_elem.getAttribute('empty'))) && 
+            arr.every(obj => !(_setBoolen(obj.elem.getAttribute('empty')) && !obj.elem.className) ? !!obj.elem.className : true) : null;
         }
-       
+
         return bool;
     }
 
@@ -77,7 +78,6 @@ export default (() => {
             }
             _setView(view, _getIndex(path[path.length - 1]), data.corner.waypoints);
             let commDir = data.axis[detachAxis[0]].find(dir => selectSign == '+' ? (dir == 'right' || dir == 'bottom') : (dir == 'left' || dir == 'top'));
-            console.log(view);
 
             unsuitDir.every(e => e != commDir) ? unsuitDir.push(commDir) : null;
             (!data.corner.waypoints && _hasElemInRange(data.cell[_getIndex(coord)], view) ||
