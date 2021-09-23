@@ -12,7 +12,7 @@ export default (() => {
         view = null;
 
     function __init__() {
-        // _getElemFromArr(Object.values(data.axis).flat(), data.nearDir).forEach(e => _setPath(e))
+        //? _getElemFromArr(Object.values(data.axis).flat(), data.nearDir).forEach(e => _setPath(e))
         _setPath(data.nearDir);
     }
 
